@@ -1,4 +1,6 @@
-#include<iostream>
+#include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 
 class message {
@@ -22,10 +24,30 @@ class message {
 };
 
 int main()
-{
+{   
+    uint8_t messageBytes[10];
+    string filename = "testMessageBits";
+    ifstream ifs (filename.c_str());
+    if (ifs.is_open())
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            ifs >> messageBytes[i];
+        }
+
+        ifs.close(); // CLose input file
+    }
+    else { //Error message
+        printf ("could not find %s\n", filename.c_str());
+        EXIT_FAILURE;
+    }
     message msg;
     msg.id = 1;
     msg.printAllFields();
     printf ("Hello\n");
+    for (int i = 0; i < sizeof (messageBytes) / sizeof (messageBytes[0]); i++) {
+        printf ("%d ", messageBytes[i]);
+    }
+    printf ("\n");
     return 0;
 }
